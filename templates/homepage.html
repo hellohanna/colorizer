@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<nav>
+  <h1>Colorize bw photos</h1>
+  <ul>
+    <li>About</li>
+  </ul>
+  <div class="underline"></div>
+</nav>
+<div class="container">
+  <button>Start</button>
+</div>
+<div class="overlay">
+</div>
+<div class="main-popup">
+  <div class="popup-header">
+    <div id="popup-close-button"><a href="#"></a></div>
+    <ul>
+      <li><a href="#" id="sign-in">Sign In</a></li>
+      <li><a href="#" id="register">Register</a></li>
+    </ul>
+  </div><!--.popup-header-->
+  <div class="popup-content">
+    <form action="/signin" class="sign-in" method="POST">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password">
+      <input type="submit" id="submit" value="Submit">
+    </form>
+   
+    <form action="/login" class="register" method="POST">
+      <label for="name-register">Name:</label>
+      <input type="name" name="name" id="name-register">
+      <label for="email-register">Email:</label>
+      <input type="email" name="email" id="email-register">
+      <label for="password-register">Password:</label>
+      <input type="password" name="password" id="password-register">
+      <label for="password-confirmation">Confirm Password:</label>
+      <input type="password-confirmation" id="password-confirmation">
+      <!--<p class="check-mark">
+        <input type="checkbox" id="accept-terms">
+        <label for="accept-terms">I agree to the <a href="#">Terms</a></label>
+      </p> -->
+      <input type="submit" id="submit" value="Create Account">
+    </form>
+  </div><!--.popup-content-->
+</div><!--.main-popup-->
+
+<script src="static/main.js"></script>
+
+{%endblock%}
