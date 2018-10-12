@@ -37,8 +37,8 @@ class Photo(db.Model):
                          autoincrement=True,
                          primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    original_photo = db.Column(db.String(300), nullable=False)
-    processed_photo = db.Column(db.String(300), nullable=False)
+    original_photo = db.Column(db.String(300), nullable=True)
+    processed_photo = db.Column(db.String(300), nullable=True)
 
     user = db.relationship('User')
 

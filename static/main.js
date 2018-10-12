@@ -11,6 +11,10 @@ $(function() {
   var $firstChild = $('nav ul li:first-child');
   var $secondChild = $('nav ul li:nth-child(2)');
   var $thirdChild = $('nav ul li:nth-child(3)');
+
+
+
+
   
   //defining function to create underline initial state on document load
   function initialState() {
@@ -87,6 +91,10 @@ $(function() {
     $formSignIn.addClass('move-left');
     $formRegister.addClass('move-left');
   });
+
+  $logOut.on('click'.function(){
+
+  })
   
   $('input').on('submit', function(e){
     e.preventDefault(); //used to prevent submission of form...remove for real use

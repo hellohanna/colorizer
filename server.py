@@ -1,12 +1,28 @@
 from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, request, flash, redirect, session
+from flask import url_for, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Photo
 
 
+import os
+
+from werkzeug.utils import secure_filename
+
+import subprocess
+
+
+
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
@@ -95,6 +111,69 @@ def logout():
 
 
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/form-data', methods=['POST'])
+def upload_file():
+    # check if the post request has the file part
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect('/library')
+    file = request.files['file']
+
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect('/library')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        url = url_for('uploaded_file',filename=filename)
+        url = url[1:]
+        new_url = url_for('uploaded_file',filename='new_'+ filename)
+        new_url = new_url[1:]
+
+        completed = subprocess.run([
+            'convert', url, '-set', 'colorspace', 'Gray', new_url
+        ], stdout=subprocess.PIPE, check=True)
+
+        new_url = '/' + new_url
+
+        user_id = session['user_id']
+        new_photo = Photo(
+            user_id=user_id,
+            original_photo=url_for('uploaded_file', filename=filename),
+            processed_photo=new_url,
+        )
+        db.session.add(new_photo)
+        db.session.commit()
+
+        return redirect(f'/processing/{filename}')
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+
+
+@app.route('/processing/<filename>')
+def photo_processing(filename):
+    """Photo processing page"""
+    new_filename = 'new_' + filename
+    url = url_for('uploaded_file', filename=filename)
+    new_url = url_for('uploaded_file', filename=new_filename)
+
+    return render_template(
+        "processing.html", filename=url, new_filename=new_url
+    )
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
@@ -104,5 +183,7 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
+
+
 
     app.run(host="0.0.0.0")

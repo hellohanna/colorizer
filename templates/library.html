@@ -2,27 +2,31 @@
 {% block content %}
 
 <nav>
-  <h1>Colorize bw photos</h1>
-  <ul>
-    <li>About</li>
-     <li>Log out</li>
-     <li><a href="/logout" id="log-out">Log out</a></li>
-  </ul>
-  <div class="underline"></div>
+    <h1>Colorize bw photos</h1>
+    <ul>
+        <li>About</li>
+        <li>Log out</li>
+        <li><a href="/logout" id="log-out">Log out</a></li>
+    </ul>
+    <div class="underline"></div>
 </nav>
-<div class="container">
-    <button> Upload photo</button>
+<div class="in-container">
+    <!-- <button> Upload photo</button> -->
+
+    <form method="POST" enctype="multipart/form-data" action="/form-data">
+        <input type=file name=file>
+        <input type=submit value=Upload>
+    </form>
 </div>
 <div id="library-element">
     <ul>{%for photo in photos:%}
-
-    <div id="library-element">
+        <div id="library-element">
             <img src={{photo.original_photo}} id="img-library">
             <img src={{photo.processed_photo}} id="img-library">
-     </div>
+        </div>
+        <br />
+        {%endfor%}
     </ul>
-    {%endfor%}
 </div>
-
 
 {%endblock%}

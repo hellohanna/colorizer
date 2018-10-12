@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<nav>
+  <h1>Colorize bw photos</h1>
+  <ul>
+    <li>About</li>
+     <li>Log out</li>
+     <li><a href="/logout" id="log-out">Log out</a></li>
+  </ul>
+  <div class="underline"></div>
+</nav>
+
+<div class="my-container">
+    <img src={{filename}} id="img-processing">
+    <button type="button" id="process-button">Click Me!</button>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<p></p>
+<div class="my-container">
+    <p>
+    <a href="/library">Go back to the library</a>
+</p>
+   
+</div>
+
+
+
+<script>
+  "use strict";
+  // code here for above problem
+  $('#process-button').on('click', () => $('#img-processing').attr("src",`{{new_filename}}`));
+</script>
+
+
+
+
+{%endblock%}
