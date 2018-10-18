@@ -92,11 +92,4 @@ $(function() {
     $formRegister.addClass('move-left');
   });
 
-  $logOut.on('click'.function(){
-
-  })
-  
-  $('input').on('submit', function(e){
-    e.preventDefault(); //used to prevent submission of form...remove for real use
-  });
 });

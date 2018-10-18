@@ -13,7 +13,7 @@
 <div class="in-container">
     <!-- <button> Upload photo</button> -->
 
-    <form method="POST" enctype="multipart/form-data" action="/form-data">
+    <form method="POST" enctype="multipart/form-data" action="/upload">
         <input type=file name=file>
         <input type=submit value=Upload>
     </form>
@@ -21,8 +21,8 @@
 <div id="library-element">
     <ul>{%for photo in photos:%}
         <div id="library-element">
-            <img src={{photo.original_photo}} id="img-library">
-            <img src={{photo.processed_photo}} id="img-library">
+            <img src="{{ url_for('uploaded_file', filename=photo.original_photo) }}" id="img-library">
+            <img src="{{ url_for('uploaded_file', filename=photo.processed_photo) }}" id="img-library">
         </div>
         <br />
         {%endfor%}

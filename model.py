@@ -43,22 +43,7 @@ class Photo(db.Model):
     user = db.relationship('User')
 
 
-def example_data():
-    """Create some example data."""
 
-  
-    jane = User(name='Jane', email='jdoe@gmail.com', password='1234')
-    alice = User(name='Alice', email='aperson@hotmail.com', password='2134')
-    bob = User(name='Bob', email='bpersonne@yahoo.com', password='qwerty')
-    
-    photos = [
-    Photo(user_id=jane.user_id,original_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg",processed_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg"),
-    Photo(user_id=alice.user_id,original_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg",processed_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg"),
-    Photo(user_id=bob.user_id,original_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg",processed_photo="https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg")
-    ]
-
-    db.session.add_all(photos)
-    db.session.commit()
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

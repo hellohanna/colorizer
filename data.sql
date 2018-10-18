@@ -16,11 +16,11 @@ CREATE TABLE photos
   (
      photo_id SERIAL PRIMARY KEY,
      user_id INT NOT NULL,
-     original_photo VARCHAR(300) NOT NULL,
-     processed_photo VARCHAR(300) NOT NULL,
+     original_photo VARCHAR(300),
+     processed_photo VARCHAR(300),
      FOREIGN KEY (user_id) REFERENCES users(user_id)
   );
 
-INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (1, 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg', 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-27.jpg');
-INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (2, 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg', 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-27.jpg');
-INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (3, 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-28.jpg', 'https://www.digitalphotomentor.com/photography/2016/12/creating-good-black-white-27.jpg');
+INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (1, 'kingfisher-1905255.jpg', 'kingfisher-1905255.jpg');
+INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (2, 'kingfisher-1905255.jpg', 'kingfisher-1905255.jpg');
+INSERT INTO photos (user_id, original_photo, processed_photo) VALUES (3, 'kingfisher-1905255.jpg', 'kingfisher-1905255.jpg');

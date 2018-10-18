@@ -267,7 +267,7 @@ button:hover {
   overflow: hidden;
 }
 
-form.sign-in {
+form.pink.sign-in {
   position: relative; 
   top: 40px;
   left: 0;
@@ -279,18 +279,18 @@ form.sign-in {
   transition: all .35s;
 }
 
-form.sign-in.move-left {
+form.pink.sign-in.move-left {
   opacity: 0;
   transform: translateX(-550px);
 }
 
-form label {
+form.pink label {
   font-size: 1.1em;
   color: #ceaee8;
   margin-left: 23px;
 }
 
-form.sign-in input {
+form.pink input {
   border-radius: 5px;
   width: 90%;
   height: 40px;
@@ -302,7 +302,7 @@ form.sign-in input {
   border: none;
 }
 
-input#submit {
+form.pink input.submit {
   background-color: #ceaee8;
   color: #fff;
   height: 50px;
@@ -318,9 +318,9 @@ input#submit {
   border: none;
 }
 
-form.register {
+form.pink.register {
   position: relative; 
-  top: -280px;
+  top: -250px;
   left: 0;
   font-size: 1em;
   opacity: 0;
@@ -331,15 +331,15 @@ form.register {
   transition: all .35s;
 }
 
-form.register.move-left {
+form.pink.register.move-left {
   opacity: 1;
   transform: translateX(0);
 }
 
-form.register input {
+form.pink.register input {
   border-radius: 5px;
   width: 90%;
-  height: 40px;
+  height: 110px;
   margin: 5px 5% 15px 5%;
   padding: 10px;
   font-size: 1em;

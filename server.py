@@ -116,8 +116,8 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/form-data', methods=['POST'])
-def upload_file():
+@app.route('/upload', methods=['POST'])
+def upload():
     # check if the post request has the file part
     if 'file' not in request.files:
         flash('No file part')
@@ -130,30 +130,17 @@ def upload_file():
         flash('No selected file')
         return redirect('/library')
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        new_photo = Photo(user_id=session['user_id'])
+        db.session.add(new_photo)
+        db.session.flush()
+
+        filename = f'{new_photo.photo_id}_{secure_filename(file.filename)}'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        url = url_for('uploaded_file',filename=filename)
-        url = url[1:]
-        new_url = url_for('uploaded_file',filename='new_'+ filename)
-        new_url = new_url[1:]
-
-        completed = subprocess.run([
-            'convert', url, '-set', 'colorspace', 'Gray', new_url
-        ], stdout=subprocess.PIPE, check=True)
-
-        new_url = '/' + new_url
-
-        user_id = session['user_id']
-        new_photo = Photo(
-            user_id=user_id,
-            original_photo=url_for('uploaded_file', filename=filename),
-            processed_photo=new_url,
-        )
-        db.session.add(new_photo)
+        new_photo.original_photo = filename
         db.session.commit()
 
-        return redirect(f'/processing/{filename}')
+        return redirect(f'/processing/{new_photo.photo_id}')
 
 
 @app.route('/uploads/<filename>')
@@ -162,16 +149,44 @@ def uploaded_file(filename):
                                filename)
 
 
-@app.route('/processing/<filename>')
-def photo_processing(filename):
+@app.route('/processing/<photo_id>')
+def photo_processing(photo_id):
     """Photo processing page"""
-    new_filename = 'new_' + filename
-    url = url_for('uploaded_file', filename=filename)
-    new_url = url_for('uploaded_file', filename=new_filename)
 
-    return render_template(
-        "processing.html", filename=url, new_filename=new_url
-    )
+    photo = Photo.query.filter(
+        Photo.user_id == session['user_id'],
+        Photo.photo_id == photo_id,
+    ).first()
+
+
+    return render_template("processing.html", photo=photo)
+
+
+@app.route('/process/<photo_id>', methods=['POST'])
+def process_photo(photo_id):
+    """Convert photo"""
+
+    photo = Photo.query.filter(
+        Photo.user_id == session['user_id'],
+        Photo.photo_id == photo_id,
+    ).first()
+
+    processed_photo = f'new_{photo.original_photo}'
+    original_path = os.path.join(UPLOAD_FOLDER, photo.original_photo)
+    processed_path = os.path.join(UPLOAD_FOLDER, processed_photo)
+
+    completed = subprocess.run([
+        'convert', original_path, '-set', 'colorspace', 'Gray', processed_path
+    ], stdout=subprocess.PIPE, check=True)
+
+    photo.processed_photo = processed_photo
+    db.session.commit()
+
+    url=url_for('uploaded_file', filename=photo.processed_photo)
+    return url;
+
+
+
 
 
 if __name__ == "__main__":

@@ -11,46 +11,10 @@
 </nav>
 
 <div class="my-container">
-    <img src={{filename}} id="img-processing">
+    <img src="{{ url_for('uploaded_file', filename=photo.original_photo) }}"" id="img-processing">
     <button type="button" id="process-button">Click Me!</button>
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 <p></p>
 <div class="my-container">
@@ -61,13 +25,21 @@
 </div>
 
 
-
 <script>
-  "use strict";
-  // code here for above problem
-  $('#process-button').on('click', () => $('#img-processing').attr("src",`{{new_filename}}`));
-</script>
+    "use strict";
 
+    function replaceImage(results) {
+        $('#img-processing').attr("src", results);
+        console.log("Finished replaceStatus");
+    }
+
+    function processImage() {
+        $.post('/process/{{ photo.photo_id }}', replaceImage);
+        console.log("Finished sending AJAX");
+    }
+
+    $('#process-button').on('click', processImage);
+</script>
 
 
 
