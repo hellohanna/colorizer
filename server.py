@@ -1,4 +1,6 @@
 from jinja2 import StrictUndefined
+import colorize
+import shutil
 
 from flask import Flask, render_template, request, flash, redirect, session
 from flask import url_for, send_from_directory
@@ -171,19 +173,27 @@ def process_photo(photo_id):
         Photo.photo_id == photo_id,
     ).first()
 
-    processed_photo = f'new_{photo.original_photo}'
+    """processed_photo = f'new_{photo.original_photo}'
     original_path = os.path.join(UPLOAD_FOLDER, photo.original_photo)
     processed_path = os.path.join(UPLOAD_FOLDER, processed_photo)
+    abs_path = os.path.abspath(original_path)
 
     completed = subprocess.run([
         'convert', original_path, '-set', 'colorspace', 'Gray', processed_path
     ], stdout=subprocess.PIPE, check=True)
 
     photo.processed_photo = processed_photo
+    db.session.commit()"""
+
+    # Returns file name in the uploads folder.
+    processed_filename = colorize.process(UPLOAD_FOLDER, photo.original_photo)
+    photo.processed_photo = processed_filename
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    print(url_for('uploaded_file', filename=photo.original_photo))
     db.session.commit()
 
     url=url_for('uploaded_file', filename=photo.processed_photo)
-    return url;
+    return url
 
 
 

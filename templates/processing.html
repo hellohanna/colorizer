@@ -25,12 +25,23 @@
 </div>
 
 
+
 <script>
     "use strict";
 
     function replaceImage(results) {
         $('#img-processing').attr("src", results);
         console.log("Finished replaceStatus");
+        var a = document.createElement('a');
+        var linkText = document.createTextNode("Download");
+        a.appendChild(linkText);
+        a.title = "Download";
+        a.href = results;
+        a.setAttribute('download', results);
+
+
+        document.body.appendChild(a);
+
     }
 
     function processImage() {
@@ -39,6 +50,8 @@
     }
 
     $('#process-button').on('click', processImage);
+
+
 </script>
 
 
