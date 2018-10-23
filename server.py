@@ -10,6 +10,7 @@ from model import connect_to_db, db, User, Photo
 
 
 import os
+import s3
 
 from werkzeug.utils import secure_filename
 
@@ -22,6 +23,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.add_template_global(s3.url_for, name='s3_url_for')
 
 
 
@@ -137,7 +139,7 @@ def upload():
         db.session.flush()
 
         filename = f'{new_photo.photo_id}_{secure_filename(file.filename)}'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        s3.upload(file, filename)
 
         new_photo.original_photo = filename
         db.session.commit()

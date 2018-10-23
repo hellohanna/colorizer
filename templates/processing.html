@@ -11,7 +11,7 @@
 </nav>
 
 <div class="my-container">
-    <img src="{{ url_for('uploaded_file', filename=photo.original_photo) }}"" id="img-processing">
+    <img src="{{ s3_url_for(filename=photo.original_photo) }}"" id="img-processing">
     <button type="button" id="process-button">Click Me!</button>
 </div>
 
