@@ -3,12 +3,12 @@ import colorize
 import shutil
 
 from flask import Flask, render_template, request, flash, redirect, session
-from flask import url_for, send_from_directory
+from flask import send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Photo
 
-
+from PIL import Image
 import os
 import s3
 
@@ -146,13 +146,6 @@ def upload():
 
         return redirect(f'/processing/{new_photo.photo_id}')
 
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
-
-
 @app.route('/processing/<photo_id>')
 def photo_processing(photo_id):
     """Photo processing page"""
@@ -188,13 +181,16 @@ def process_photo(photo_id):
     db.session.commit()"""
 
     # Returns file name in the uploads folder.
+
+    s3.get_image(photo.original_photo)
+   
     processed_filename = colorize.process(UPLOAD_FOLDER, photo.original_photo)
     photo.processed_photo = processed_filename
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print(url_for('uploaded_file', filename=photo.original_photo))
     db.session.commit()
-
-    url=url_for('uploaded_file', filename=photo.processed_photo)
+    
+    file = open(os.path.join(app.config['UPLOAD_FOLDER'], processed_filename), 'rb')
+    s3.upload(file, processed_filename, content_type='image/png')
+    url=s3.url_for(processed_filename)
     return url
 
 

@@ -12,7 +12,7 @@
 
 <div class="my-container">
     <img src="{{ s3_url_for(filename=photo.original_photo) }}"" id="img-processing">
-    <button type="button" id="process-button">Click Me!</button>
+    <button type="button" id="process-button">Colorize</button>
 </div>
 
 
@@ -36,9 +36,8 @@
         var linkText = document.createTextNode("Download");
         a.appendChild(linkText);
         a.title = "Download";
-        a.href = results;
         a.setAttribute('download', results);
-
+        a.href = results;
 
         document.body.appendChild(a);
 

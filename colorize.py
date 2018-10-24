@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+import s3
 
 from werkzeug.utils import secure_filename
 
@@ -75,9 +76,10 @@ def transfer_color(original_path, colorized_path, processed_path):
 def process(upload_folder, original_filename):
     """Returns filename of the processed photo in the uploads folder."""
 
+
     original_path = os.path.abspath(os.path.join(
         upload_folder, original_filename))
-
+   
     test_dir = os.path.abspath(os.path.join(
         upload_folder, 'test'))
     if not os.path.exists(test_dir):
