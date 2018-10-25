@@ -81,7 +81,7 @@ def login():
     db.session.add(new_user)
     db.session.commit()
 
-    #add new user to the session
+    # Add new user to the session
     new_user = User.query.filter(User.email==email).one()
     session['user_id'] = new_user.user_id
 
@@ -94,13 +94,13 @@ def user_detail():
 
     user_id = session.get("user_id")
 
-    #Checking if the user is logged in a system.
+    # Checking if the user is logged in a system
     if user_id:
         user = User.query.get(user_id)
-        photos = Photo.query.filter(Photo.user_id==user_id).all()
+        photos = Photo.query.filter(Photo.user_id==user_id).order_by(Photo.photo_id.desc()).all()
         return render_template("library.html", user=user, photos=photos)
 
-    #if user is not logged in send him back to the homepage
+    # If user is not logged in send him back to the homepage
     else:
         flash("You are not logged in.")
         return redirect('/')

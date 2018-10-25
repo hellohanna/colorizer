@@ -4,7 +4,7 @@
   <h1>Colorize bw photos</h1>
   <ul>
     <li>About</li>
-     <li>Log out</li>
+     <li><a href="/library">Library</a></li>
      <li><a href="/logout" id="log-out">Log out</a></li>
   </ul>
   <div class="underline"></div>
@@ -16,20 +16,12 @@
 </div>
 
 
-<p></p>
-<div class="my-container">
-    <p>
-    <a href="/library">Go back to the library</a>
-</p>
-   
-</div>
-
-
 
 <script>
     "use strict";
 
     function replaceImage(results) {
+        $( ".loader" ).remove();
         $('#img-processing').attr("src", results);
         console.log("Finished replaceStatus");
         var a = document.createElement('a');
@@ -46,6 +38,9 @@
     function processImage() {
         $.post('/process/{{ photo.photo_id }}', replaceImage);
         console.log("Finished sending AJAX");
+        var div = document.createElement("div");
+        div.setAttribute("class", "loader");
+        document.body.appendChild(div);
     }
 
     $('#process-button').on('click', processImage);
