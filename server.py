@@ -9,6 +9,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Photo
 
 from PIL import Image
+import bcrypt
 import os
 import s3
 
@@ -48,8 +49,6 @@ def signin():
     email = request.form.get('email')
     password = request.form.get('password')
 
-
-
     user = User.query.filter(User.email==email).one()
 
     if not user:
@@ -58,7 +57,7 @@ def signin():
 
         return redirect("/")
 
-    if user.password != password:
+    if user.password != bcrypt.hashpw(password.encode(),user.password):
 
         flash("Incorrect password")
         return redirect("/")
@@ -69,15 +68,16 @@ def signin():
     return redirect("/library")
 
 
-@app.route('/login', methods= ['POST'])
-def login():
+@app.route('/signup', methods= ['POST'])
+def signup():
     """Add info about new user in a database. Log in a new user"""
 
     email = request.form.get('email')
     password = request.form.get('password')
     name = request.form.get('name')
-
-    new_user = User(email=email, password=password, name = name)
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode(), salt)
+    new_user = User(email=email, password=hashed_password, name=name)
     db.session.add(new_user)
     db.session.commit()
 
@@ -104,16 +104,6 @@ def user_detail():
     else:
         flash("You are not logged in.")
         return redirect('/')
-
-@app.route('/logout')
-def logout():
-    """Log out."""
-
-    del session["user_id"]
-    flash("Logged Out.")
-    return redirect("/")
-
-
 
 
 def allowed_file(filename):
@@ -168,20 +158,6 @@ def process_photo(photo_id):
         Photo.photo_id == photo_id,
     ).first()
 
-    """processed_photo = f'new_{photo.original_photo}'
-    original_path = os.path.join(UPLOAD_FOLDER, photo.original_photo)
-    processed_path = os.path.join(UPLOAD_FOLDER, processed_photo)
-    abs_path = os.path.abspath(original_path)
-
-    completed = subprocess.run([
-        'convert', original_path, '-set', 'colorspace', 'Gray', processed_path
-    ], stdout=subprocess.PIPE, check=True)
-
-    photo.processed_photo = processed_photo
-    db.session.commit()"""
-
-    # Returns file name in the uploads folder.
-
     s3.get_image(photo.original_photo)
    
     processed_filename = colorize.process(UPLOAD_FOLDER, photo.original_photo)
@@ -194,6 +170,21 @@ def process_photo(photo_id):
     return url
 
 
+@app.route('/map')
+def show_map():
+    """Map page"""
+
+    return render_template("map.html", google_api_key=os.environ.get('GOOGLE_API_KEY', ''))
+
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect("/")
+
 
 
 
@@ -203,10 +194,9 @@ if __name__ == "__main__":
     app.debug = True
 
     connect_to_db(app)
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-
-
 
     app.run(host="0.0.0.0")

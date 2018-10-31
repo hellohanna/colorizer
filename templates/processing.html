@@ -1,14 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<nav>
-  <h1>Colorize bw photos</h1>
-  <ul>
-    <li>About</li>
-     <li><a href="/library">Library</a></li>
-     <li><a href="/logout" id="log-out">Log out</a></li>
-  </ul>
-  <div class="underline"></div>
-</nav>
+
 
 <div class="my-container">
     <img src="{{ s3_url_for(filename=photo.original_photo) }}"" id="img-processing">

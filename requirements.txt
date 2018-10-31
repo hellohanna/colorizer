@@ -1,3 +1,4 @@
+flask-bcrypt
 blinker==1.4
 boto3
 click==6.7

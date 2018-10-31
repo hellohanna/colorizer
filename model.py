@@ -18,7 +18,7 @@ class User(db.Model):
                         autoincrement=True,
                         primary_key=True)
     email = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
+    password = db.Column(db.LargeBinary(), nullable=True)
     name = db.Column(db.String(100), nullable=True)
 
     def __repr__(self):
@@ -43,13 +43,25 @@ class Photo(db.Model):
     user = db.relationship('User')
 
 
+def example_data():
+    """Create some sample data."""
+
+    # In case this is run more than once, empty out existing data
+    User.query.delete()
+    Photo.query.delete()
+
+    # Add user and photo
+    user = User(email='anylike@gmail', password=b'$2b$12$AtliYTeZH.Pfj.Drlph6FO6Fyh0ps9rL0V.p5DZDMel8MrrcvtHXO')
+    db.session.add(user)
+    db.session.commit()
 
 
-def connect_to_db(app):
+
+def connect_to_db(app, database_uri="postgresql:///testdb"):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///testdb'
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
