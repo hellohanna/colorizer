@@ -185,6 +185,11 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
+@app.route('/training')
+def training_page():
+    """Show training set page"""
+
+    return render_template("training.html")
 
 
 

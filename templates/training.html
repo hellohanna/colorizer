@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p1> Upload your dataset and train a model</p1>
+<br/>
+<p2> Bbbbjsgflfh;aoij'ajahg;h;guh;oghh;;;ghaaluflshvbalbvh</p2>
+<br/>
+<br/>
+
+
+<div class="in-container">
+    <!-- <button> Upload photo</button> -->
+
+    <form method="POST" enctype="multipart/form-data" action="/upload-dataset">
+        <input type=file name=file>
+        <input type=submit value=UploadDataset>
+    </form>
+</div>
+<br/>
+<br/>
+<div>
+    <button type="button" id="process-button">Train</button>
+</div>
+
+
+
+{%endblock%}

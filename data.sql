@@ -21,3 +21,11 @@ CREATE TABLE photos
      FOREIGN KEY (user_id) REFERENCES users(user_id)
   );
 
+CREATE TABLE datasets
+    (
+        dataset_id SERIAL PRIMARY KEY,
+        name varchar(255),
+        user_id INT NOT NULL,
+        process_bar INT,
+        processed_file VARCHAR(100),
+        FOREIGN KEY (user_id) REFERENCES users(user_id))

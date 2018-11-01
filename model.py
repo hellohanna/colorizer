@@ -42,6 +42,19 @@ class Photo(db.Model):
 
     user = db.relationship('User')
 
+class DataSet(db.Model):
+    """User's datasets"""
+
+    __tablename__ = "datasets"
+    dataset_id = db.Column(db.Integer,
+                            autoincrement=True,
+                            primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    name = db.Column(db.String(100), nullable=True)
+    processed_file = db.Column(db.String(100), nullable=True)
+    process_bar = db.Column(db.Integer, nullable=True)
+    user = db.relationship('User')
+
 
 def example_data():
     """Create some sample data."""
