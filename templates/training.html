@@ -9,19 +9,47 @@
 
 
 <div class="in-container">
-    <!-- <button> Upload photo</button> -->
-
     <form method="POST" enctype="multipart/form-data" action="/upload-dataset">
+        <label>Name</label>
+        <input type="text" name="name">
         <input type=file name=file>
         <input type=submit value=UploadDataset>
     </form>
-</div>
-<br/>
-<br/>
-<div>
-    <button type="button" id="process-button">Train</button>
+
+    {% for dataset in datasets %}
+        <div id="dataset-{{ dataset.dataset_id }}">
+            <div>
+                {{ dataset.name }}
+            </div>
+            <button
+                type="button"
+                class="train-button"
+                data-dataset-id="{{ dataset.dataset_id }}"
+            >
+                Train
+            </button>
+        </div>
+    {% endfor %}
 </div>
 
+<script>
+    "use strict";
 
+    function trainDatasetCompleted(dataset_id) {
+        $('#dataset-' + dataset_id + ' button').remove();
+        $('#dataset-' + dataset_id).append("<div>Processing</div>");
+    }
+
+    function trainButtonClick(dataset_id) {
+        $.post('/train-dataset/' + dataset_id, function () {
+            trainDatasetCompleted(dataset_id);
+        });
+    }
+
+    $('.train-button').on('click', function () {
+        let dataset_id = $(this).data('dataset-id');
+        trainButtonClick(dataset_id);
+    });
+</script>
 
 {%endblock%}

@@ -1,5 +1,10 @@
 from PIL import Image
 import os
+import shutil
+import zipfile
+
+
+PIX2PIX_PATH = os.environ.get('PIX2PIX_PATH', 'pix2pix')
 
 def resize_img(file_path):
     """Resize image to max side: 512px"""
@@ -68,7 +73,25 @@ def resize_and_align(file_path, target_path, i):
     aligned_image.save(os.path.join(target_path, '{:04d}.jpg'.format(i)))
 
 
+def unzip_and_prepare(path_to_zip_file, dataset_id):
+    """Unzipping dataset and creating a training set of images"""
+    zip_ref = zipfile.ZipFile(path_to_zip_file, 'r')
+    directory_to_extract_to = 'train/unzipped'
+    zip_ref.extractall(directory_to_extract_to)
+    zip_ref.close()
+    os.remove(path_to_zip_file)
+    image_file_paths = get_file_paths(directory_to_extract_to)
 
+    train_number = int(len(image_file_paths)*0.8)
+    dataset_path = '{}/datasets/dataset_{}'.format(PIX2PIX_PATH, dataset_id)
+    i = 0
+    for image_path in image_file_paths:
+        if i < train_number:
+            resize_and_align(image_path, os.path.join(dataset_path, 'train'), i)
+        else:
+            resize_and_align(image_path, os.path.join(dataset_path, 'test'), i)
+        i+=1
+    shutil.rmtree(directory_to_extract_to)
 
 
 def get_file_paths(folder):
@@ -87,9 +110,3 @@ def get_file_paths(folder):
     return image_file_paths
 
 
-image_file_paths = get_file_paths('/home/vagrant/src/my-project/train')
-
-i = 0
-for image_path in image_file_paths:
-    resize_and_align(image_path, '/home/vagrant/src/my-project/result', i)
-    i+=1

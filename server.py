@@ -3,10 +3,9 @@ import colorize
 import shutil
 
 from flask import Flask, render_template, request, flash, redirect, session
-from flask import send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, Photo
+from model import connect_to_db, db, User, Photo, Dataset
 
 from PIL import Image
 import bcrypt
@@ -15,12 +14,10 @@ import s3
 
 from werkzeug.utils import secure_filename
 
-import subprocess
 
 
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -106,9 +103,9 @@ def user_detail():
         return redirect('/')
 
 
-def allowed_file(filename):
+def allowed_photo_filename(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in ['png', 'jpg', 'jpeg']
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -123,7 +120,7 @@ def upload():
     if file.filename == '':
         flash('No selected file')
         return redirect('/library')
-    if file and allowed_file(file.filename):
+    if file and allowed_photo_filename(file.filename):
         new_photo = Photo(user_id=session['user_id'])
         db.session.add(new_photo)
         db.session.flush()
@@ -185,12 +182,60 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
+
 @app.route('/training')
 def training_page():
     """Show training set page"""
 
-    return render_template("training.html")
+    datasets = Dataset.query.filter(Dataset.user_id == session['user_id']).all()
+    return render_template("training.html", datasets=datasets)
 
+
+def allowed_dataset_filename(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ['zip']
+
+
+@app.route('/upload-dataset', methods=['POST'])
+def upload_dataset():
+    # check if the post request has the file part
+    if 'file' not in request.files or not request.files['file'].filename:
+        flash('No file specified')
+        return redirect('/training')
+
+    file = request.files['file']
+    if not allowed_dataset_filename(file.filename):
+        flash("Only .zip files are allowed")
+        return redirect('/training')
+
+    name = request.form['name']
+    if not name:
+        flash('Name of project can not be empty')
+        return redirect('/training')
+
+    new_dataset = Dataset(user_id=session['user_id'], name=name)
+    db.session.add(new_dataset)
+    db.session.flush()
+    filename = f'{new_dataset.dataset_id}_{secure_filename(file.filename)}'
+    file.save(os.path.join(UPLOAD_FOLDER, filename))
+
+    new_dataset.dataset_filename = filename
+    new_dataset.state = Dataset.UPLOADED
+    db.session.commit()
+
+    return redirect('/training')
+
+
+@app.route('/train-dataset/<dataset_id>', methods=['POST'])
+def train_dataset(dataset_id):
+    """Start training process"""
+
+    dataset = Dataset.query.filter(Dataset.dataset_id == dataset_id).one()
+    if dataset.state != Dataset.UPLOADED:
+        raise ValueError("Dataset is not uploaded")
+    dataset.state = Dataset.TRAINING_REQUESTED
+    db.session.commit()
+    return ('', 201)
 
 
 if __name__ == "__main__":

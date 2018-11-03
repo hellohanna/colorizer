@@ -42,8 +42,15 @@ class Photo(db.Model):
 
     user = db.relationship('User')
 
-class DataSet(db.Model):
+
+class Dataset(db.Model):
     """User's datasets"""
+
+    CREATED = 'CREATED'
+    UPLOADED = 'UPLOADED'
+    TRAINING_REQUESTED = 'TRAINING_REQUESTED'
+    TRAINING_STARTED = 'TRAINING_STARTED'
+    TRAINING_COMPLETED = 'TRAINING_COMPLETED'
 
     __tablename__ = "datasets"
     dataset_id = db.Column(db.Integer,
@@ -51,8 +58,10 @@ class DataSet(db.Model):
                             primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     name = db.Column(db.String(100), nullable=True)
-    processed_file = db.Column(db.String(100), nullable=True)
+    dataset_filename = db.Column(db.String(255), nullable=True)
+    model_filename = db.Column(db.String(255), nullable=True)
     process_bar = db.Column(db.Integer, nullable=True)
+    state = db.Column(db.String(30), nullable=False, default=CREATED)
     user = db.relationship('User')
 
 
@@ -86,5 +95,5 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
-    
-    print("Connected to DB.")
+    db.create_all()
+    print('Done')

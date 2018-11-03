@@ -16,8 +16,9 @@ call test.py with image name.jpg :
 --name portraits_pix2pix --gpu_ids -1 --norm instance  --image name.jpg
 """
 
+PIX2PIX_PATH = os.environ.get('PIX2PIX_PATH', 'pix2pix')
 RESULTS_FOLDER = \
-    '/home/vagrant/src/my-project/results/portraits_pix2pix/test_latest/images'
+    os.path.abspath('results/portraits_pix2pix/test_latest/images')
 
 def resize_and_align(src_path, dest_path):
     """Resize and double the picture"""
@@ -47,13 +48,16 @@ def resize_and_align(src_path, dest_path):
 
 def colorize_photo(filename):
     completed = subprocess.run([
-        'python', '/home/vagrant/src/pix2pix/test.py', '--checkpoints_dir',
-        '/home/vagrant/src/pix2pix/checkpoints', '--dataroot', 
-        '/home/vagrant/src/my-project/uploads', '--direction=AtoB', 
-        '--model', 'pix2pix', '--name', 'portraits_pix2pix',
-        '--gpu_ids', '-1',  '--norm', 'instance', '--image', filename],
-        stdout=subprocess.PIPE, check=True)
-
+        'python', os.path.join(PIX2PIX_PATH, 'test.py'),
+        '--checkpoints_dir', os.path.join(PIX2PIX_PATH, 'checkpoints'),
+        '--dataroot', os.path.abspath('uploads'),
+        '--direction=AtoB',
+        '--model', 'pix2pix',
+        '--name', 'portraits_pix2pix',
+        '--gpu_ids', '-1',
+        '--norm', 'instance',
+        '--image', filename,
+    ], stdout=subprocess.PIPE, check=True)
 
 
 def resize_back(original_path, processed_path):
