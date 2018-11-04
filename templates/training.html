@@ -17,18 +17,26 @@
     </form>
 
     {% for dataset in datasets %}
-        <div id="dataset-{{ dataset.dataset_id }}">
-            <div>
-                {{ dataset.name }}
+        {% if dataset.state != dataset.CREATED %}
+            <div id="dataset-{{ dataset.dataset_id }}">
+                <span>
+                    {{ dataset.name }}
+                </span>
+                {% if dataset.state == dataset.UPLOADED %}
+                    <button
+                        type="button"
+                        class="train-button"
+                        data-dataset-id="{{ dataset.dataset_id }}"
+                    >
+                        Train
+                    </button>
+                {% elif dataset.state == dataset.TRAINING_COMPLETED %}
+                    <span>Training completed.</span>
+                {% else %}
+                    <span>Processing.</span>
+                {% endif %}
             </div>
-            <button
-                type="button"
-                class="train-button"
-                data-dataset-id="{{ dataset.dataset_id }}"
-            >
-                Train
-            </button>
-        </div>
+        {% endif %}
     {% endfor %}
 </div>
 
@@ -37,7 +45,7 @@
 
     function trainDatasetCompleted(dataset_id) {
         $('#dataset-' + dataset_id + ' button').remove();
-        $('#dataset-' + dataset_id).append("<div>Processing</div>");
+        $('#dataset-' + dataset_id).append("<span>Processing</span>");
     }
 
     function trainButtonClick(dataset_id) {

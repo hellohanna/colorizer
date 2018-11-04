@@ -1,6 +1,6 @@
 from model import connect_to_db, db, User, Photo, Dataset
 from flask import Flask
-from resize import unzip_and_prepare
+from resize import unzip_and_prepare, cleanup_after_training
 import time
 import subprocess
 import os
@@ -45,7 +45,10 @@ def do_work(dataset):
         )], check=True)
 
     dataset.state = Dataset.TRAINING_COMPLETED
+    dataset.model_filename = model_name
     db.session.commit()
+    cleanup_after_training(dataset_path, model_name)
+
 
 
 if __name__ == "__main__":
@@ -59,6 +62,9 @@ if __name__ == "__main__":
             ).first()
             if dataset:
                 do_work(dataset)
+        except KeyboardInterrupt:
+            print("Interrupted by user")
+            exit(1)
         except:
             print("Exception while selecting or doing work:")
             print("-" * 60)

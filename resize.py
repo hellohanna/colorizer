@@ -109,4 +109,11 @@ def get_file_paths(folder):
         break  # prevent descending into subfolders
     return image_file_paths
 
+def cleanup_after_training(dataset_path, model_name):
+    """Deleting all files except latest_net_G.pth file"""
 
+    shutil.rmtree(dataset_path)
+    model_path = os.path.join(PIX2PIX_PATH, 'checkpoints', model_name)
+    for f in os.listdir(model_path):
+        if f != 'latest_net_G.pth':
+            os.remove(os.path.join(model_path, f))
