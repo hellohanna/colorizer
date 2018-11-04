@@ -8,17 +8,8 @@ import shutil
 import subprocess
 
 
-"""
-take image from the database, resize and alighn it and store it 
- in the  --dataroot ./datasets/portraits
-call test.py with image name.jpg :
- python test.py --dataroot ./datasets/portraits --direction=AtoB --model pix2pix 
---name portraits_pix2pix --gpu_ids -1 --norm instance  --image name.jpg
-"""
-
 PIX2PIX_PATH = os.environ.get('PIX2PIX_PATH', 'pix2pix')
-RESULTS_FOLDER = \
-    os.path.abspath('results/portraits_pix2pix/test_latest/images')
+
 
 def resize_and_align(src_path, dest_path):
     """Resize and double the picture"""
@@ -46,14 +37,14 @@ def resize_and_align(src_path, dest_path):
     aligned_image.save(dest_path)
 
 
-def colorize_photo(filename):
+def colorize_photo(filename, model_name):
     completed = subprocess.run([
         'python', os.path.join(PIX2PIX_PATH, 'test.py'),
         '--checkpoints_dir', os.path.join(PIX2PIX_PATH, 'checkpoints'),
         '--dataroot', os.path.abspath('uploads'),
         '--direction=AtoB',
         '--model', 'pix2pix',
-        '--name', 'portraits_pix2pix',
+        '--name', model_name,
         '--gpu_ids', '-1',
         '--norm', 'instance',
         '--image', filename,
@@ -77,10 +68,11 @@ def transfer_color(original_path, colorized_path, processed_path):
     ], stdout=subprocess.PIPE, check=True)
 
 
-def process(upload_folder, original_filename):
+def process(upload_folder, original_filename, model_name):
     """Returns filename of the processed photo in the uploads folder."""
 
-
+    results_folder = \
+        os.path.abspath('results/{}/test_latest/images'.format(model_name))
     original_path = os.path.abspath(os.path.join(
         upload_folder, original_filename))
    
@@ -92,12 +84,12 @@ def process(upload_folder, original_filename):
     aligned_path = os.path.join(test_dir, original_filename)
 
     resize_and_align(original_path, aligned_path)
-    colorize_photo(original_filename)
+    colorize_photo(original_filename, model_name)
 
     basename = original_filename.rsplit('.', 1)[0]
     processed_filename = '{}_fake_B.png'.format(basename)
     colorized_path = os.path.join(
-        RESULTS_FOLDER, processed_filename)
+        results_folder, processed_filename)
 
     processed_path = os.path.join(upload_folder, processed_filename)
     resize_back(original_path, colorized_path)

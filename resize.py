@@ -115,5 +115,8 @@ def cleanup_after_training(dataset_path, model_name):
     shutil.rmtree(dataset_path)
     model_path = os.path.join(PIX2PIX_PATH, 'checkpoints', model_name)
     for f in os.listdir(model_path):
-        if f != 'latest_net_G.pth':
-            os.remove(os.path.join(model_path, f))
+        path = os.path.join(model_path, f)
+        if os.isdir(path):
+            shutil.rmtree(path)
+        elif f != 'latest_net_G.pth':
+            os.remove(path)

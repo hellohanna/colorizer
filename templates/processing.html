@@ -4,7 +4,14 @@
 
 <div class="my-container">
     <img src="{{ s3_url_for(filename=photo.original_photo) }}"" id="img-processing">
-    <button type="button" id="process-button">Colorize</button>
+
+    <select id="process-select" default="0">
+        <option value="0">Colorize</option>
+        {% for dataset in datasets %}
+            <option value="{{ dataset.dataset_id }}">{{ dataset.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="button" id="process-button">Process</button>
 </div>
 
 
@@ -28,7 +35,10 @@
     }
 
     function processImage() {
-        $.post('/process/{{ photo.photo_id }}', replaceImage);
+        let data = {
+            dataset_id: parseInt($("#process-select").val()),
+        };
+        $.post('/process/{{ photo.photo_id }}', JSON.stringify(data), replaceImage);
         console.log("Finished sending AJAX");
         var div = document.createElement("div");
         div.setAttribute("class", "loader");

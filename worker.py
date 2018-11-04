@@ -37,7 +37,8 @@ def do_work(dataset):
                 --name {model_name} \
                 --model pix2pix \
                 --direction AtoB \
-                --gpu_ids -1
+                --gpu_ids -1 \
+                --norm instance
         """.format(
             pwd=PIX2PIX_PATH,
             dataset_path=dataset_path,

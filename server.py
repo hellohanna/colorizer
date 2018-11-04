@@ -133,6 +133,7 @@ def upload():
 
         return redirect(f'/processing/{new_photo.photo_id}')
 
+
 @app.route('/processing/<photo_id>')
 def photo_processing(photo_id):
     """Photo processing page"""
@@ -142,22 +143,41 @@ def photo_processing(photo_id):
         Photo.photo_id == photo_id,
     ).first()
 
+    datasets = Dataset.query.filter(
+        Dataset.state == Dataset.TRAINING_COMPLETED
+    ).all()
 
-    return render_template("processing.html", photo=photo)
+    return render_template("processing.html", photo=photo, datasets=datasets)
 
 
 @app.route('/process/<photo_id>', methods=['POST'])
 def process_photo(photo_id):
     """Convert photo"""
 
+    json = request.get_json()
+    dataset_id = json.get('dataset_id', 0)
+
+    if dataset_id == 0:
+        model_name = 'portraits_pix2pix'
+    else:
+        dataset = Dataset.query.filter(
+            Dataset.state == Dataset.TRAINING_COMPLETED,
+            Dataset.dataset_id == dataset_id,
+            Dataset.user_id == session['user_id'],
+        ).one()
+        model_name = dataset.model_filename
+    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    print(model_name)
     photo = Photo.query.filter(
         Photo.user_id == session['user_id'],
         Photo.photo_id == photo_id,
-    ).first()
+    ).one()
 
     s3.get_image(photo.original_photo)
    
-    processed_filename = colorize.process(UPLOAD_FOLDER, photo.original_photo)
+    processed_filename = colorize.process(
+        UPLOAD_FOLDER, photo.original_photo, model_name
+    )
     photo.processed_photo = processed_filename
     db.session.commit()
     
