@@ -1,55 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-<div class="my-container">
-    <img src="{{ s3_url_for(filename=photo.original_photo) }}"" id="img-processing">
-
-    <select id="process-select" default="0">
-        <option value="0">Colorize</option>
-        {% for dataset in datasets %}
-            <option value="{{ dataset.dataset_id }}">{{ dataset.name }}</option>
-        {% endfor %}
-    </select>
-    <button type="button" id="process-button">Process</button>
+<div class="processing">
+    <div id="process-form">
+        <select id="process-select" default="0">
+            <option value="0">Colorize</option>
+            {% for dataset in datasets %}
+                <option value="{{ dataset.dataset_id }}">{{ dataset.name }}</option>
+            {% endfor %}
+        </select>
+        <button
+            type="button"
+            id="process-button"
+            data-photo-id="{{ photo.photo_id }}"
+        >
+            Process
+        </button>
+    </div>
+    <div>
+        <img
+            src="{{ s3_url_for(filename=photo.original_photo) }}"
+            id="img-processing"
+        >
+    </div>
 </div>
 
-
-
-<script>
-    "use strict";
-
-    function replaceImage(results) {
-        $( ".loader" ).remove();
-        $('#img-processing').attr("src", results);
-        console.log("Finished replaceStatus");
-        var a = document.createElement('a');
-        var linkText = document.createTextNode("Download");
-        a.appendChild(linkText);
-        a.title = "Download";
-        a.setAttribute('download', results);
-        a.href = results;
-
-        document.body.appendChild(a);
-
-    }
-
-    function processImage() {
-        let data = {
-            dataset_id: parseInt($("#process-select").val()),
-        };
-        $.post('/process/{{ photo.photo_id }}', JSON.stringify(data), replaceImage);
-        console.log("Finished sending AJAX");
-        var div = document.createElement("div");
-        div.setAttribute("class", "loader");
-        document.body.appendChild(div);
-    }
-
-    $('#process-button').on('click', processImage);
-
-
-</script>
-
-
-
-{%endblock%}
+{% endblock %}

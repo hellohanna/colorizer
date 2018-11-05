@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<p1> Upload your dataset and train a model</p1>
-<br/>
-<p2> Bbbbjsgflfh;aoij'ajahg;h;guh;oghh;;;ghaaluflshvbalbvh</p2>
-<br/>
-<br/>
+<div class="training">
+    <p1> Upload your dataset and train a model</p1>
 
-
-<div class="in-container">
     <form method="POST" enctype="multipart/form-data" action="/upload-dataset">
         <label>Name</label>
         <input type="text" name="name">
@@ -39,25 +34,5 @@
         {% endif %}
     {% endfor %}
 </div>
-
-<script>
-    "use strict";
-
-    function trainDatasetCompleted(dataset_id) {
-        $('#dataset-' + dataset_id + ' button').remove();
-        $('#dataset-' + dataset_id).append("<span>Processing</span>");
-    }
-
-    function trainButtonClick(dataset_id) {
-        $.post('/train-dataset/' + dataset_id, function () {
-            trainDatasetCompleted(dataset_id);
-        });
-    }
-
-    $('.train-button').on('click', function () {
-        let dataset_id = $(this).data('dataset-id');
-        trainButtonClick(dataset_id);
-    });
-</script>
 
 {%endblock%}

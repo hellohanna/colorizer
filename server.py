@@ -39,23 +39,19 @@ def index():
 
     return render_template("homepage.html")
 
-@app.route('/signin', methods= ['POST'])
+@app.route('/signin', methods=['POST'])
 def signin():
     """Check if user exists. Redirect to the library"""
 
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User.query.filter(User.email==email).one()
-
+    user = User.query.filter(User.email==email).first()
     if not user:
         flash("No such user")
-        
-
         return redirect("/")
 
-    if user.password != bcrypt.hashpw(password.encode(),user.password):
-
+    if user.password != bcrypt.hashpw(password.encode(), user.password):
         flash("Incorrect password")
         return redirect("/")
 

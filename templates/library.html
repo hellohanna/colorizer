@@ -1,27 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="in-container">
-    <!-- <button> Upload photo</button> -->
-
+<div class="library">
     <form method="POST" enctype="multipart/form-data" action="/upload">
-        <input type=file name=file>
-        <input type=submit value=Upload>
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
     </form>
-</div>
-<div id="library-element">
-    <ul>{%for photo in photos:%}
-        <div id="library-element">
-            <img src="{{ s3_url_for(filename=photo.original_photo) }}" id="img-library">
-            {%if photo.processed_photo %}
-                <img src="{{ s3_url_for(filename=photo.processed_photo) }}" id="img-library">
+    {% for photo in photos %}
+        <div>
+            <img src="{{ s3_url_for(filename=photo.original_photo) }}">
+            {% if photo.processed_photo %}
+                <img src="{{ s3_url_for(filename=photo.processed_photo) }}">
             {% else %}
                 <a href="/processing/{{ photo.photo_id }}">Colorize</a>
             {% endif %}
         </div>
-        <br />
-        {%endfor%}
-    </ul>
+    {%endfor%}
 </div>
 
 {%endblock%}

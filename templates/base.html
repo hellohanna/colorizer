@@ -2,38 +2,37 @@
 <html>
 <head>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript">
-        $.ajaxSetup({
-            contentType: "application/json; charset=utf-8"
-        });
-    </script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/styles.css">
     <title>Home page</title>
 </head>
 <body>
 <nav>
-    <h1>Colorize bw photos</h1>
+    <div class="nav-caption">
+        <a href="/">Colorize Beyond</a>
+    </div>
     <ul>
-        <li>About</li>
         <li><a href="/map">Map</a></li>
-        <li><a href="/training">More</a></li>
-        <li><a href="/library">Library</a></li>
         {% if 'user_id' in session %}
-        <li><a href="/logout" id="log-out"> Log out </a></li>
+            <li><a href="/training">More</a></li>
+            <li><a href="/library">Library</a></li>
+            <li><a href="/logout" id="log-out">Log out</a></li>
+        {% else %}
+            <li><a href="#">Log in</a></li>
         {% endif %}
     </ul>
-    <div class="underline"></div>
 </nav>
 
-
 {% for flash in get_flashed_messages() %}
-  {{ flash }}
+<div class="flash">
+    {{ flash }}
+</div>
 {% endfor %}
 
 {% block content %}
-  Put your body here.
 {% endblock %}
+
+<script src="/static/main.js"></script>
 
 </body>
 </html>
