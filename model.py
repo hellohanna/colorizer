@@ -17,7 +17,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    email = db.Column(db.String(64), nullable=True)
+    email = db.Column(db.String(64), nullable=True, unique=True)
     password = db.Column(db.LargeBinary(), nullable=True)
     name = db.Column(db.String(100), nullable=True)
 
@@ -73,7 +73,7 @@ def example_data():
     Photo.query.delete()
 
     # Add user and photo
-    user = User(email='anylike@gmail', password=b'$2b$12$AtliYTeZH.Pfj.Drlph6FO6Fyh0ps9rL0V.p5DZDMel8MrrcvtHXO')
+    user = User(email='hanna@gmail.com', password=b'$2b$12$AtliYTeZH.Pfj.Drlph6FO6Fyh0ps9rL0V.p5DZDMel8MrrcvtHXO')
     db.session.add(user)
     db.session.commit()
 

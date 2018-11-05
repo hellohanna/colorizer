@@ -1,10 +1,10 @@
 from jinja2 import StrictUndefined
 import colorize
 import shutil
-
+import re
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
-
+from sqlalchemy.exc import IntegrityError
 from model import connect_to_db, db, User, Photo, Dataset
 
 from PIL import Image
@@ -70,13 +70,21 @@ def signup():
     """Add info about new user in a database. Log in a new user"""
 
     email = request.form.get('email')
+    match_obj = re.search(r"(\w+)\@(\w+\.com)", email)
+    if match_obj is None:
+        flash("Incorrect email address")
+        return redirect('/')
     password = request.form.get('password')
     name = request.form.get('name')
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode(), salt)
-    new_user = User(email=email, password=hashed_password, name=name)
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        new_user = User(email=email, password=hashed_password, name=name)
+        db.session.add(new_user)
+        db.session.commit()
+    except IntegrityError:
+        flash('User with this email already exists')
+        return redirect('/')
 
     # Add new user to the session
     new_user = User.query.filter(User.email==email).one()
@@ -84,6 +92,7 @@ def signup():
 
     flash("User {} added.".format(name))
     return redirect("/library")
+
 
 @app.route("/library")
 def user_detail():
@@ -166,8 +175,7 @@ def process_photo(photo_id):
             Dataset.user_id == session['user_id'],
         ).one()
         model_name = dataset.model_filename
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print(model_name)
+
     photo = Photo.query.filter(
         Photo.user_id == session['user_id'],
         Photo.photo_id == photo_id,
