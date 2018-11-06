@@ -48,4 +48,11 @@ $(function() {
         let dataset_id = $(this).data('dataset-id');
         trainButtonClick(dataset_id);
     });
+
+
+    // Library page.
+    $('#library-file-input').on('change', function () {
+        let filename = $(this).val().split('\\').pop();
+        $('#library-file-input + label').html(filename);
+    });
 });

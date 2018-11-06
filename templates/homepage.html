@@ -3,50 +3,13 @@
 {% block content %}
 
 <div class="homepage-background">
-  <button class="btn btn-primary btn-xl homepage-signup-button">
-    Sign Up
-  </button>
+    <button
+        class="btn btn-primary btn-xl homepage-signup-button"
+        data-toggle="modal"
+        data-target="#signup-modal"
+    >
+        Sign Up
+    </button>
 </div>
-
-
-<!--<div>
-  <h3>Log In</h3>
-  <form action="/signin" method="POST">
-    <div>
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email">
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" name="password" id="password">
-    </div>
-    <div>
-      <input type="submit" value="Log In">
-    </div>
-  </form>
-
-  <h3>Create Account</h3>
-  <form action="/signup" method="POST">
-    <div>
-      <label for="name-register">Name:</label>
-      <input type="name" name="name" id="name-register">
-    </div>
-    <div>
-      <label for="email-register">Email:</label>
-      <input type="email" name="email" id="email-register">
-    </div>
-    <div>
-      <label for="password-register">Password:</label>
-      <input type="password" name="password" id="password-register">
-    </div>
-    <div>
-      <label for="password-confirmation">Confirm Password:</label>
-      <input type="password" id="password-confirmation">
-    </div>
-    <div>
-      <input type="submit" value="Create Account">
-    </div>
-  </form>
-</div> -->
 
 {%endblock%}

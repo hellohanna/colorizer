@@ -2,20 +2,48 @@
 {% block content %}
 
 <div class="library">
-    <form method="POST" enctype="multipart/form-data" action="/upload">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
-    </form>
-    {% for photo in photos %}
-        <div>
-            <img src="{{ s3_url_for(filename=photo.original_photo) }}">
-            {% if photo.processed_photo %}
-                <img src="{{ s3_url_for(filename=photo.processed_photo) }}">
-            {% else %}
-                <a href="/processing/{{ photo.photo_id }}">Colorize</a>
-            {% endif %}
-        </div>
-    {%endfor%}
+    <div class="container">
+        <h2 class="mt-4 mb-3">
+            Pusheen, this is your library
+        </h2>
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="/upload"
+            class="d-flex mb-4"
+        >
+            <div class="custom-file mr-4">
+                <input type="file" class="custom-file-input" id="library-file-input" name="file">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <input type="submit" value="Upload" class="btn btn-primary btn-inline">
+        </form>
+        {% for photo in photos %}
+            <div class="row mb-4">
+                <div class="col-sm">
+                    <img
+                        src="{{ s3_url_for(filename=photo.original_photo) }}"
+                        class="img-fluid"
+                    >
+                </div>
+                <div class="col-sm">
+                    {% if photo.processed_photo %}
+                        <img
+                            src="{{ s3_url_for(filename=photo.processed_photo) }}"
+                            class="img-fluid"
+                        >
+                    {% else %}
+                        <a href="/processing/{{ photo.photo_id }}">Colorize</a>
+                    {% endif %}
+                </div>
+                <div class="library-actions-overlay">
+                    <div class="buttons">
+                        <button class="btn btn-default">Hey!</button>
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+    </div>
 </div>
 
 {%endblock%}

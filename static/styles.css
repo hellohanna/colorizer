@@ -24,6 +24,7 @@ html, body, * {
 .homepage-background .homepage-signup-button {
     margin-top: 75vh;
     bottom: 30vh;
+    z-index: -1;
 }
 
 
@@ -81,6 +82,14 @@ html, body, * {
   padding: 15px 40px;
 }
 
+.btn-inline {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    line-height: 1.5;
+    height: 38px;
+    max-height: 38px;
+}
+
 .btn-primary {
   background-color: #fcbd20;
   border-color: #fcbd20;
@@ -119,6 +128,34 @@ html, body, * {
 
 
 /* Library page */
-.library img {
-    width: 40vw;
+.library img.img-fluid {
+    width: 100%;
+}
+
+.library .custom-file {
+    max-width: 400px;
+}
+
+.library .row {
+    position: relative;
+}
+
+.library .row > .library-actions-overlay {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    top: 0;
+    left: 15px;
+    right: 15px;
+    bottom: 0;
+}
+
+.library .row > .library-actions-overlay:hover {
+    opacity: 1;
+}
+
+.library .row > .library-actions-overlay > .buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }

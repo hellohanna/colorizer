@@ -11,6 +11,17 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous"
     >
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link
+        rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+        crossorigin="anonymous"
+    >
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/styles.css">
     <title>Home page</title>
@@ -41,47 +52,77 @@
                     <a
                         class="nav-link active"
                         data-toggle="modal"
-                        data-target="#modalLoginForm"
+                        data-target="#login-modal"
                         href="#"
-                    >Log in</a>
+                    >Sign in</a>
                 </li>
             {% endif %}
         </ul>
     </div>
 </nav>
 
-<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Sign In</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body mx-3">
-                <div class="md-form mb-5">
-                    <i class="fa fa-envelope prefix grey-text"></i>
-                    <input type="email" id="defaultForm-email" class="form-control validate">
-                    <label data-error="wrong" data-success="right" for="defaultForm-email">Your email</label>
+            <form action="/signin" method="POST">
+                <div class="modal-body">
+                    <div class="md-form mb-3">
+                        <label for="email">Email:</label>
+                        <input class="form-control validate" type="email" name="email" id="email">
+                    </div>
+                    <div class="md-form mb-3">
+                        <label for="password">Password:</label>
+                        <input class="form-control validate" type="password" name="password" id="password">
+                    </div>
                 </div>
-
-                <div class="md-form mb-4">
-                    <i class="fa fa-lock prefix grey-text"></i>
-                    <input type="password" id="defaultForm-pass" class="form-control validate">
-                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+                <div class="modal-footer justify-content-center p-3">
+                    <input type="submit" class="btn btn-primary" value="Sign In">
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Sign In</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button class="btn btn-default">Login</button>
-            </div>
+            <form action="/signup" method="POST">
+                <div class="modal-body">
+                    <div class="md-form mb-3">
+                        <label for="name-register">Name:</label>
+                        <input type="name" name="name" id="name-register" class="form-control validate">
+                    </div>
+                    <div class="md-form mb-3">
+                        <label for="email-register">Email:</label>
+                        <input type="email" name="email" id="email-register" class="form-control validate">
+                    </div>
+                    <div class="md-form mb-3">
+                        <label for="password-register">Password:</label>
+                        <input type="password" name="password" id="password-register" class="form-control validate">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-3">
+                    <input type="submit" class="btn btn-primary" value="Sign Up">
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 {% for flash in get_flashed_messages() %}
-<div class="flash">
+<div class="flash d-none">
     {{ flash }}
 </div>
 {% endfor %}

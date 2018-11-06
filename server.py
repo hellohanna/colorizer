@@ -72,7 +72,11 @@ def signup():
         flash("Incorrect email address")
         return redirect('/')
     password = request.form.get('password')
-    name = request.form.get('name')
+    name = request.form.get('name', '').strip()
+    if not name:
+        flash("Name can't be empty")
+        return redirect('/')
+
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode(), salt)
     try:
@@ -270,8 +274,5 @@ if __name__ == "__main__":
 
     connect_to_db(app)
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
-    # Use the DebugToolbar
-    DebugToolbarExtension(app)
 
     app.run(host="0.0.0.0")
