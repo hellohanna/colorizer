@@ -1,7 +1,15 @@
+{% set navbar_transparent = True %}
 {% extends 'base.html' %}
 {% block content %}
 
-<div>
+<div class="homepage-background">
+  <button class="btn btn-primary btn-xl homepage-signup-button">
+    Sign Up
+  </button>
+</div>
+
+
+<!--<div>
   <h3>Log In</h3>
   <form action="/signin" method="POST">
     <div>
@@ -39,6 +47,6 @@
       <input type="submit" value="Create Account">
     </div>
   </form>
-</div>
+</div> -->
 
 {%endblock%}

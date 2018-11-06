@@ -3,29 +3,98 @@ html, body, * {
 }
 
 
+/* Homepage */
+.homepage-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+
+    background: url("colors-318502.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+
+    text-align: center;
+}
+
+
+.homepage-background .homepage-signup-button {
+    margin-top: 75vh;
+    bottom: 30vh;
+}
+
+
 /* Nav bar */
-nav {
-    height: 30px;
-}
-
-nav > .nav-caption {
-    float: left;
-}
-
-nav ul {
-    float: right;
-    margin: 0;
-}
-
-nav ul li {
-    display: inline-block;
-    list-style: none;
-    margin: 0 0 3px 0;
-    padding-left: 10px;
-}
-
 .flash {
-    color: #f50;
+    color: #fdcc52;
+}
+
+.navbar-main .navbar-brand {
+  color: #fdcc52;
+  font-family: 'Yeseva One', cursive;
+  font-weight: 300;
+  font-size: 25px;
+  letter-spacing: 1px;
+}
+
+.navbar-main .navbar-brand:hover, #mainNav .navbar-brand:focus {
+  color: #fcbd20;
+}
+
+.navbar-main .navbar-nav > li > a {
+  font-size: 11px;
+  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.navbar-bg {
+    background-color: #1e2223;
+}
+
+.navbar-main .navbar-nav > li > a.active {
+  color: #fdcc52 !important;
+}
+
+.navbar-main .navbar-nav > li > a,
+.navbar-main .navbar-nav > li > a:focus {
+  color: #222222;
+}
+
+.navbar-main .navbar-nav > li > a:hover,
+.navbar-main .navbar-nav > li > a:focus:hover {
+  color: #fdcc52;
+}
+
+
+/* Modify standard Bootstrap button styles */
+.btn {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-weight: 400;
+}
+
+.btn-xl {
+  font-size: 18px;
+  padding: 15px 40px;
+}
+
+.btn-primary {
+  background-color: #fcbd20;
+  border-color: #fcbd20;
+}
+
+.btn-primary:active, .btn-primary:focus, .btn-primary:hover {
+  background-color: #fec810 !important;
+  border-color: #fec810 !important;
+  color: white;
+}
+
+.btn-primary:active, .btn-primary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+  box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
 }
 
 

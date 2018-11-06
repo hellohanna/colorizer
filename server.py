@@ -22,6 +22,7 @@ UPLOAD_FOLDER = 'uploads'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.add_template_global(s3.url_for, name='s3_url_for')
+app.add_template_global(False, name='navbar_transparent')
 
 
 
