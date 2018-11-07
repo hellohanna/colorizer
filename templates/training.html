@@ -8,43 +8,66 @@
                 <h3> Upload your dataset and train a model</h3>
             </div>
             <p class="text center">
-                This is a page for creating your own colorizing model. This app uses dataset
+                This is the page for creating your own colorizing model. This app uses datasets
                 to train a custom image-to-image translation model. By default it's trained to
-                colorise portrait photos. To add additional process button you should first create
+                colorise portrait photos. To add additional process buttons, you should first create
                 your own dataset. The first step to do this is to choose a topic
                 of pictures you want this app to colorize. It can be nature, cars, houses etc.
-                The result of the trained model depends on how big provided dataset is.
-                To provide the dataset pack all photos to zip archive and upload.
+                The performance of the trained model depends on how big provided dataset is.
+                To create a dataset, pack all the photos into a zip archive and upload using
+                the form below.
             </p>
-            <form method="POST" enctype="multipart/form-data" action="/upload-dataset">
-                <label>Name</label>
-                <input type="text" name="name">
-                <input type=file name=file>
-                <input type=submit value=UploadDataset>
-            </form>
-
-            {% for dataset in datasets %}
-                {% if dataset.state != dataset.CREATED %}
-                    <div id="dataset-{{ dataset.dataset_id }}">
-                        <span>
-                            {{ dataset.name }}
-                        </span>
-                        {% if dataset.state == dataset.UPLOADED %}
-                            <button
-                                type="button"
-                                class="train-button"
-                                data-dataset-id="{{ dataset.dataset_id }}"
-                            >
-                                Train
-                            </button>
-                        {% elif dataset.state == dataset.TRAINING_COMPLETED %}
-                            <span>Training completed.</span>
-                        {% else %}
-                            <span>Processing.</span>
-                        {% endif %}
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+                action="/upload-dataset"
+                class="mb-4"
+            >
+                <div class="md-form mb-2">
+                    <input
+                        class="form-control validate"
+                        type="text"
+                        name="name"
+                        id="dataset-name-input"
+                        placeholder="Dataset Name"
+                    >
+                </div>
+                <div class="d-flex">
+                    <div class="custom-file mr-3">
+                        <input type="file" class="custom-file-input" name="file">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                {% endif %}
-            {% endfor %}
+                    <input type="submit" value="Upload Dataset" class="btn btn-primary btn-inline">
+                </div>
+            </form>
+            <ul class="list-group">
+                {% for dataset in datasets %}
+                    {% if dataset.state != dataset.CREATED %}
+                        <li
+                            id="dataset-{{ dataset.dataset_id }}"
+                            class="list-group-item d-flex justify-content-between"
+                        >
+                            <span>
+                                {{ dataset.name }}
+                            </span>
+                            {% if dataset.state == dataset.UPLOADED %}
+                                <button
+                                    type="button"
+                                    class="train-button btn btn-secondary"
+                                    data-dataset-id="{{ dataset.dataset_id }}"
+                                >
+                                    <i class="fas fa-dumbbell"></i>
+                                    Train
+                                </button>
+                            {% elif dataset.state == dataset.TRAINING_COMPLETED %}
+                                <span>Training completed.</span>
+                            {% else %}
+                                <span>Training in progress...</span>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

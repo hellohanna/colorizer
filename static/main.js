@@ -61,8 +61,8 @@ $(function() {
 
 
     // Library page.
-    $('#library-file-input').on('change', function () {
+    $('.custom-file-input').on('change', function () {
         let filename = $(this).val().split('\\').pop();
-        $('#library-file-input + label').html(filename);
+        $(this).next().html(filename);
     });
 });
