@@ -32,14 +32,20 @@
                             src="{{ s3_url_for(filename=photo.processed_photo) }}"
                             class="img-fluid"
                         >
-                    {% else %}
-                        <a href="/processing/{{ photo.photo_id }}">Colorize</a>
                     {% endif %}
                 </div>
                 <div class="library-actions-overlay">
                     <div class="buttons">
+                        {% if not photo.processed_photo %}
+                            <a
+                                href="/processing/{{ photo.photo_id }}"
+                                class="btn btn-primary"
+                            >
+                                Colorize
+                            </a>
+                        {% endif %}
                         <button
-                            class="btn btn-primary btn-sm library-delete-pair"
+                            class="btn btn-default library-delete-pair"
                             data-photo-id="{{ photo.photo_id }}"
                         >
                             <i class="fas fa-trash-alt"></i>

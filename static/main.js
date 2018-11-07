@@ -18,13 +18,15 @@ $(function() {
 
     // Processing page.
     function replaceImage(results) {
-        $(".loader").remove();
+        $(".processing .prcessing-loading-overlay").hide();
         $('#img-processing').attr("src", results);
         console.log("Finished replaceStatus");
         $('#process-form').append(
-            '<a href="' + results
+            '<div class="mt-3">'
+            + '<a class="btn btn-secondary" href="' + results
             + '" download="' + results
-            + '">Download</a>'
+            + '"><i class="fas fa-download"></i></a>'
+            + '</div>'
         );
     }
 
@@ -34,10 +36,7 @@ $(function() {
             dataset_id: parseInt($("#process-select").val()),
         };
         $.post('/process/' + photo_id, JSON.stringify(data), replaceImage);
-        console.log("Finished sending AJAX");
-        var div = document.createElement("div");
-        div.setAttribute("class", "loader");
-        document.body.appendChild(div);
+        $(".processing .prcessing-loading-overlay").show();
     }
 
     $('#process-button').on('click', processImage);

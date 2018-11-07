@@ -153,6 +153,9 @@ def photo_processing(photo_id):
         Photo.photo_id == photo_id,
     ).first()
 
+    if not photo:
+        return redirect('/library')
+
     datasets = Dataset.query.filter(
         Dataset.state == Dataset.TRAINING_COMPLETED
     ).all()

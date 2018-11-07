@@ -1,27 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="processing">
-    <div id="process-form">
-        <select id="process-select" default="0">
-            <option value="0">Colorize</option>
-            {% for dataset in datasets %}
-                <option value="{{ dataset.dataset_id }}">{{ dataset.name }}</option>
-            {% endfor %}
-        </select>
-        <button
-            type="button"
-            id="process-button"
-            data-photo-id="{{ photo.photo_id }}"
-        >
-            Process
-        </button>
+<div class="processing container pt-3">
+    <div class="row">
+        <div class="processing-image col-sm-8">
+            <img
+                class="img-fluid"
+                src="{{ s3_url_for(filename=photo.original_photo) }}"
+                id="img-processing"
+            >
+        </div>
+        <div id="process-form" class="col-sm-4">
+            <div class="input-group">
+                <select
+                    class="custom-select"
+                    id="process-select" default="0"
+                >
+                    <option value="0">Colorize</option>
+                    {% for dataset in datasets %}
+                        <option value="{{ dataset.dataset_id }}">
+                            {{ dataset.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="input-group-append">
+                    <button
+                        class="btn btn-primary"
+                        type="button"
+                        id="process-button"
+                        data-photo-id="{{ photo.photo_id }}"
+                    >
+                        Process
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="processing-image">
-        <img
-            src="{{ s3_url_for(filename=photo.original_photo) }}"
-            id="img-processing"
-        >
+
+    <div class="prcessing-loading-overlay">
+        <div class="loading">
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+            <div class="loading-bar"></div>
+        </div>
     </div>
 </div>
 
