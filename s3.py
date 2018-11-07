@@ -36,4 +36,12 @@ def get_image(filename):
     """Return image from s3"""
 
     client.download_file(S3_BUCKET, filename, 'uploads/{}'.format(filename))
+
+def delete(filename):
+    """Delete file"""
+
+    response = client.delete_object(
+        Bucket=S3_BUCKET,
+        Key=filename,
+    )
     

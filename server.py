@@ -255,6 +255,25 @@ def upload_dataset():
     return redirect('/training')
 
 
+@app.route('/delete-photo/<photo_id>', methods=['POST'])
+def delete_pair(photo_id):
+    photo = Photo.query.filter(Photo.photo_id == photo_id).first()
+    if photo:
+        if photo.original_photo:
+            s3.delete(photo.original_photo)
+        if photo.processed_photo:
+            s3.delete(photo.processed_photo)
+        db.session.delete(photo)
+        db.session.commit()
+
+    return ('', 200)
+
+
+@app.route("/info")
+def show_info():
+    return render_template("about.html")
+
+
 @app.route('/train-dataset/<dataset_id>', methods=['POST'])
 def train_dataset(dataset_id):
     """Start training process"""

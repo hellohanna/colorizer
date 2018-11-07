@@ -11,12 +11,26 @@ html, body, * {
     height: 100vh;
     width: 100vw;
 
+    transition: background 5s ease-in-out;
+    background:url("colors-318502bw.jpg")no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    text-align: center;
+}
+.homepage-background:hover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+
     background: url("colors-318502.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-
     text-align: center;
 }
 
@@ -34,22 +48,22 @@ html, body, * {
 }
 
 .navbar-main .navbar-brand {
-  color: #fdcc52;
-  font-family: 'Yeseva One', cursive;
-  font-weight: 300;
-  font-size: 25px;
-  letter-spacing: 1px;
+    color: #fdcc52;
+    font-family: 'Expletus Sans';
+    font-weight: 300;
+    font-size: 25px;
+    letter-spacing: 1px;
 }
 
 .navbar-main .navbar-brand:hover, #mainNav .navbar-brand:focus {
-  color: #fcbd20;
+    color: #fcbd20;
 }
 
 .navbar-main .navbar-nav > li > a {
-  font-size: 11px;
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
-  letter-spacing: 2px;
-  text-transform: uppercase;
+    font-size: 11px;
+    font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .navbar-bg {
@@ -57,29 +71,29 @@ html, body, * {
 }
 
 .navbar-main .navbar-nav > li > a.active {
-  color: #fdcc52 !important;
+    color: #fdcc52 !important;
 }
 
 .navbar-main .navbar-nav > li > a,
 .navbar-main .navbar-nav > li > a:focus {
-  color: #222222;
+    color: #222222;
 }
 
 .navbar-main .navbar-nav > li > a:hover,
 .navbar-main .navbar-nav > li > a:focus:hover {
-  color: #fdcc52;
+    color: #fdcc52;
 }
 
 
 /* Modify standard Bootstrap button styles */
 .btn {
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  font-weight: 400;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    font-weight: 400;
 }
 
 .btn-xl {
-  font-size: 18px;
-  padding: 15px 40px;
+    font-size: 18px;
+    padding: 15px 40px;
 }
 
 .btn-inline {
@@ -91,25 +105,30 @@ html, body, * {
 }
 
 .btn-primary {
-  background-color: #fcbd20;
-  border-color: #fcbd20;
+    background-color: #fcbd20;
+    border-color: #fcbd20;
 }
 
 .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
-  background-color: #fec810 !important;
-  border-color: #fec810 !important;
-  color: white;
+    background-color: #fec810 !important;
+    border-color: #fec810 !important;
+    color: white;
 }
 
 .btn-primary:active, .btn-primary:focus {
-  -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
-  box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+    box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
 }
 
 
 /* Processing page */
 .processing img {
     width: 90vw;
+}
+
+.processing-image #img-processing {
+    position:relative;
+    max-width: 800px
 }
 
 .loader {
@@ -151,11 +170,21 @@ html, body, * {
 }
 
 .library .row > .library-actions-overlay:hover {
-    opacity: 1;
+    opacity: 0.6;
 }
 
 .library .row > .library-actions-overlay > .buttons {
     position: absolute;
     top: 20px;
     right: 20px;
+}
+
+
+/* About and More pages */
+.info-container {
+    position: relative;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
 }

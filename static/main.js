@@ -4,6 +4,17 @@ $(function() {
         contentType: "application/json; charset=utf-8"
     });
 
+    // Library page.
+    function deletePair(photo_id) {
+        $.post('/delete-photo/' + photo_id, function () {
+            $("#library-row-" + photo_id).remove();
+        });
+    };
+
+    $('button.library-delete-pair').on('click', function() {
+        let photo_id = parseInt($(this).data('photo-id'));
+        deletePair(photo_id);
+    });
 
     // Processing page.
     function replaceImage(results) {
