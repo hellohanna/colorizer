@@ -3,12 +3,13 @@
 {% block content %}
 <div class="container">
     <div class="info-container">
-        <div>
+        <div class="alert alert-light">
             <h2 >About this project</h2>
+            Colorize Beyond is the web app based on a deep learning image-to-image translation implementated by Jun-Yan Zhu. The core feature of this web app allows user to upload and colorize grayscale pictures using a pre-trained deep learning pix2pix model. More advanced users can upload their own datasets and a backend worker will train models for them. Trained models can be used from web UI or via an HTTP API.
+            <br/>
+            This app was developed as a graduation project for Hackbright Academy by engineering student Hanna Babushkina.
+
         </div>
-        <p class="text center">
-            Colorize Beyond is the web app created on the base of deep learning pix2pix implementation by Jun-Yan Zhu. The basic feature of this web app allows you to upload and colorize grayscale pictures using a pre-trained deep learning pix2pix model. More advanced users can upload their own datasets and a backend worker will train models for them. Trained models can be used from web UI or via an HTTP API.
-        </p>
     </div>
 </div>
 {%endblock%}
