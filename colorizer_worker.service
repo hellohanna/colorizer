@@ -1,0 +1,17 @@
+[Unit]
+Description=Colorizer Training Worker
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Environment="LANG=en_US.UTF-8"
+Environment="LANGUAGE=en_US.UTF-8:"
+WorkingDirectory=/home/ubuntu/colorizer
+ExecStart=/bin/bash -c "source .env \
+  && source env/bin/activate \
+  && python3 worker.py &>> colorizer_worker.log"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
