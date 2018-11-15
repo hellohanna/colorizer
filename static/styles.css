@@ -12,7 +12,7 @@ html, body, * {
     height: 100vh;
     width: 100vw;
 
-    transition: background 6s ease-in-out;
+    transition: background 9s ease-in-out;
     background:url("colors-318502bw.jpg")no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
