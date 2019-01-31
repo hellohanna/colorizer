@@ -14,6 +14,8 @@ import os
 import s3
 
 from werkzeug.utils import secure_filename
+import random
+import string
 
 
 
@@ -291,23 +293,24 @@ def train_dataset(dataset_id):
 
 
 #API endpoint
-@app.route('/API/process', methods=['POST'])
+@app.route('/api/process', methods=['POST'])
 def process():
     image = request.get_data()
-    ff = open('uploads/newff.jpg','wb')
+    name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+    name += '.jpg'
+    ff = open(os.path.join(UPLOAD_FOLDER, name), 'wb')
     image = request.get_data()
     ff.write(bytes(image))
     model_name = 'portraits_pix2pix'
     processed_filename = colorize.process(
-        UPLOAD_FOLDER, 'newff.jpg', model_name
+        UPLOAD_FOLDER, name, model_name
     )
-    file = open('uploads/' + processed_filename, mode='rb') # b is important -> binary
+    # b is important -> binary
+    file = open(os.path.join(UPLOAD_FOLDER, processed_filename), mode='rb')
     fileContent = file.read()
     response = make_response(fileContent)
     response.headers.set('Content-Type', 'image/jpeg')
-    response.headers.set(
-        'Content-Disposition', 'attachment', filename='result.jpg'
-    )
+    
     return response
 
 
