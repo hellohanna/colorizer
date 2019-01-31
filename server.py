@@ -3,6 +3,7 @@ import colorize
 import shutil
 import re
 from flask import Flask, render_template, request, flash, redirect, session
+from flask import make_response
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from model import connect_to_db, db, User, Photo, Dataset
@@ -287,6 +288,27 @@ def train_dataset(dataset_id):
     dataset.state = Dataset.TRAINING_REQUESTED
     db.session.commit()
     return ('', 201)
+
+
+#API endpoint
+@app.route('/API/process', methods=['POST'])
+def process():
+    image = request.get_data()
+    ff = open('uploads/newff.jpg','wb')
+    image = request.get_data()
+    ff.write(bytes(image))
+    model_name = 'portraits_pix2pix'
+    processed_filename = colorize.process(
+        UPLOAD_FOLDER, 'newff.jpg', model_name
+    )
+    file = open('uploads/' + processed_filename, mode='rb') # b is important -> binary
+    fileContent = file.read()
+    response = make_response(fileContent)
+    response.headers.set('Content-Type', 'image/jpeg')
+    response.headers.set(
+        'Content-Disposition', 'attachment', filename='result.jpg'
+    )
+    return response
 
 
 if __name__ == "__main__":
