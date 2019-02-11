@@ -1,7 +1,6 @@
 import os
 from PIL import Image
 import s3
-
 from werkzeug.utils import secure_filename
 
 import shutil
