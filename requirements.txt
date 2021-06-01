@@ -32,7 +32,7 @@ torch==0.4.1
 torchfile==0.1.0
 torchvision==0.2.1
 tornado==5.1.1
-urllib3==1.23
+urllib3==1.26.5
 visdom==0.1.8.5
 websocket-client==0.53.0
 Werkzeug==0.14.1
